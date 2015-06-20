@@ -1,16 +1,33 @@
 #include <kernel.h>
 
-void
-print_mouse(int x, int y) {
-
-}
+unsigned char cross[20 * 20] = {BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,
+								BLACK,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,BLACK,
+								BLACK,WHITE,BLACK,BLACK,BLACK,BLACK,BLACK,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,BLACK,BLACK,BLACK,BLACK,BLACK,WHITE,BLACK,
+								BLACK,WHITE,BLACK,BLACK,BLACK,BLACK,BLACK,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,BLACK,BLACK,BLACK,BLACK,BLACK,WHITE,BLACK,
+								BLACK,WHITE,WHITE,BLACK,BLACK,BLACK,BLACK,BLACK,WHITE,WHITE,WHITE,WHITE,BLACK,BLACK,BLACK,BLACK,BLACK,WHITE,WHITE,BLACK,
+								BLACK,WHITE,WHITE,BLACK,BLACK,BLACK,BLACK,BLACK,WHITE,WHITE,WHITE,WHITE,BLACK,BLACK,BLACK,BLACK,BLACK,WHITE,WHITE,BLACK,
+								BLACK,WHITE,WHITE,WHITE,BLACK,BLACK,BLACK,BLACK,BLACK,WHITE,WHITE,BLACK,BLACK,BLACK,BLACK,BLACK,WHITE,WHITE,WHITE,BLACK,
+								BLACK,WHITE,WHITE,WHITE,BLACK,BLACK,BLACK,BLACK,BLACK,WHITE,WHITE,BLACK,BLACK,BLACK,BLACK,BLACK,WHITE,WHITE,WHITE,BLACK,
+								BLACK,WHITE,WHITE,WHITE,WHITE,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,WHITE,WHITE,WHITE,WHITE,BLACK,
+								BLACK,WHITE,WHITE,WHITE,WHITE,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,WHITE,WHITE,WHITE,WHITE,BLACK,
+								BLACK,WHITE,WHITE,WHITE,WHITE,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,WHITE,WHITE,WHITE,WHITE,BLACK,
+								BLACK,WHITE,WHITE,WHITE,WHITE,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,WHITE,WHITE,WHITE,WHITE,BLACK,
+								BLACK,WHITE,WHITE,WHITE,BLACK,BLACK,BLACK,BLACK,BLACK,WHITE,WHITE,BLACK,BLACK,BLACK,BLACK,BLACK,WHITE,WHITE,WHITE,BLACK,
+								BLACK,WHITE,WHITE,WHITE,BLACK,BLACK,BLACK,BLACK,BLACK,WHITE,WHITE,BLACK,BLACK,BLACK,BLACK,BLACK,WHITE,WHITE,WHITE,BLACK,
+								BLACK,WHITE,WHITE,BLACK,BLACK,BLACK,BLACK,BLACK,WHITE,WHITE,WHITE,WHITE,BLACK,BLACK,BLACK,BLACK,BLACK,WHITE,WHITE,BLACK,
+								BLACK,WHITE,WHITE,BLACK,BLACK,BLACK,BLACK,BLACK,WHITE,WHITE,WHITE,WHITE,BLACK,BLACK,BLACK,BLACK,BLACK,WHITE,WHITE,BLACK,
+								BLACK,WHITE,BLACK,BLACK,BLACK,BLACK,BLACK,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,BLACK,BLACK,BLACK,BLACK,BLACK,WHITE,BLACK,
+								BLACK,WHITE,BLACK,BLACK,BLACK,BLACK,BLACK,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,BLACK,BLACK,BLACK,BLACK,BLACK,WHITE,BLACK,
+								BLACK,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,BLACK,
+								BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK};
 
 int
 paint_main(int argc, char *argv[]) {
 	int x, y;
-	int acum_x=0,acum_y=0;
+	int acum_x=0,acum_y=0, prev_x = 0, prev_y = 0;
 	bool cursor;
 	bool exit=false;
+
 	input_event_t event;
 
 	// Alocar TLS
@@ -21,6 +38,7 @@ paint_main(int argc, char *argv[]) {
 	cursor = mt_cons_cursor(false);
 	init_vga();
 	fill_screen(0xE0);
+	print_from(cross, 300);
 
 	// Consumir eventos previos acumulados
 	while ( mt_input_get_cond(&event) )
@@ -59,8 +77,10 @@ paint_main(int argc, char *argv[]) {
 				y = event.mouse.y;
 				if ( event.mouse.y_sign )
 					y -= 256;
- 				acum_x+=(x);
-				acum_y-=(y);
+				prev_x = acum_x;
+				prev_y = acum_y;
+ 				acum_x += (x);
+				acum_y -= (y);
 				if(acum_x>=WIDTH){
 					acum_x=WIDTH-1;
 				}
@@ -74,9 +94,9 @@ paint_main(int argc, char *argv[]) {
 				if(acum_y<0){
 					acum_y=0;
 				}
-		
-				//print_mouse(acum_x,acum_y);
-				//exit=execute_task(acum_x,acum_y,event.mouse);
+				
+				print_mouse(acum_x, acum_y, prev_x, prev_y);
+				exit = execute_task(acum_x,acum_y,event.mouse);
 				break;
 			default:
 				break;
@@ -96,3 +116,22 @@ paint_main(int argc, char *argv[]) {
 
 	return 0;
 }
+
+int
+execute_task(int acum_x, int acum_y, mouse_event_t m_event) {
+	int clicked = get_action(acum_x, acum_y);
+
+	switch(clicked) {
+
+		default:
+			if(m_event.left_button)
+				print_line(acum_x, acum_y);
+
+	}
+	return 0;
+}
+
+int
+get_action(int acum_x, int acum_y) {
+	return 0;
+} 

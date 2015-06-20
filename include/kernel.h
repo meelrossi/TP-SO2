@@ -303,12 +303,22 @@ unsigned mt_ide_capacity(unsigned minor);
 /* vga.c */
 
 
-#define HEIGHT 320
-#define WIDTH 200
-#define getPos(x,y,width) ((y*width)+x)
+#define HEIGHT 200
+#define WIDTH 320
+#define getPos(x,y) (((y) * (320)) + (x))
+#define BACK_COLOR 0xFF
+#define MOUSE_COLOR 0x00
 
 void init_vga(void);
+void fill_screen(unsigned char color);
+void print_mouse(int curr_x, int curr_y, int prev_x,int prev_y);
+void print_line(int curr_x, int curr_y);
+int get_action(int acum_x, int acum_y);
+int execute_task(int acum_x, int acum_y, mouse_event_t m_event);
 extern void int32(unsigned char intnum, regs16_t *regs);
+void print_menu();
+
+void print_from(unsigned char * form, int length); 
 
 
 #endif

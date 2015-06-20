@@ -1,0 +1,2 @@
+export SDL_VIDEO_X11_DGAMOUSE=0
+qemu-system-i386 -cdrom mtask.iso

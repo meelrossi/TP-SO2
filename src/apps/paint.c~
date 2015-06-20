@@ -1,0 +1,4 @@
+#include <kernel.h>
+
+int
+paint_main(int argc, char *argv[])

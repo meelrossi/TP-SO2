@@ -308,19 +308,33 @@ unsigned mt_ide_capacity(unsigned minor);
 #define getPos(x,y) (((y) * (320)) + (x))
 #define BACK_COLOR 0xFF
 #define MOUSE_COLOR 0x00
+enum actions { LINE, CIRCLE, SQUARE, ERRASE, EXIT };
+#define TRANSITORY 1
+#define DEFINITIVE 2
+
 
 void init_vga(void);
 void fill_screen(unsigned char color);
 void print_mouse(int curr_x, int curr_y, int prev_x,int prev_y);
-void print_line(int curr_x, int curr_y);
-int get_action(int acum_x, int acum_y);
+void print_px(int curr_x, int curr_y, int selected_color);
+int get_action(int acum_x, int acum_y, mouse_event_t m_event);
 int execute_task(int acum_x, int acum_y, mouse_event_t m_event);
+void print_circle(int curr_x, int curr_y, int selected_color, mouse_event_t m_event);
+void print_square(int curr_x, int curr_y, int selected_color, mouse_event_t m_event);
+void print_erasable_px(int curr_x, int curr_y, int selected_color);
+void print_erasable_circle(int fixed_x, int fixed_y, int acum_x, int acum_y, int radius, int center_x, int center_y, int selected_color, int toBeErased);
+void print_prev_px(int prev_x, int prev_y);
 extern void int32(unsigned char intnum, regs16_t *regs);
 void print_menu();
 void print_colors_menu();
 void print_color(int color, int pos);
 void print_menu();
 void print_from(unsigned char * form, int length); 
-void print_current_color();
+void print_current_color(int selected_color);
+
+float sqrt(const float x);
+
+int distance(int p1_x, int p1_y, int p2_x, int p2_y);
+
 
 #endif

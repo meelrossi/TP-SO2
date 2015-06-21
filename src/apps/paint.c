@@ -85,13 +85,18 @@ unsigned char line[20 * 20] =  {BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,
 								BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK};
 
 
+
+int selected_action, selected_color;
+
+
 int
 paint_main(int argc, char *argv[]) {
 	int x, y;
 	int acum_x=0,acum_y=0, prev_x = 0, prev_y = 0;
 	bool cursor;
 	bool exit=false;
-
+	selected_action = LINE;
+	selected_color = BLACK;
 	input_event_t event;
 
 	// Alocar TLS
@@ -183,21 +188,98 @@ paint_main(int argc, char *argv[]) {
 
 int
 execute_task(int acum_x, int acum_y, mouse_event_t m_event) {
-	int clicked = get_action(acum_x, acum_y);
 
-	switch(clicked) {
+	int clicked = get_action(acum_x, acum_y, m_event);
 
-		default:
-			if(m_event.left_button)
-				print_line(acum_x, acum_y);
+	if (clicked == EXIT)
+		return 1;
 
+	if(!((acum_x >= 0 && acum_x <= 20) || 
+				(acum_y >= 180 && acum_y <= 200))) {
+		
+		switch(clicked) {
+
+			case LINE:
+					if (m_event.left_button)
+						print_px(acum_x, acum_y, selected_color);
+				break;
+			case CIRCLE:
+					print_circle(acum_x, acum_y, selected_color, m_event);
+				break;
+			case SQUARE:
+					print_square(acum_x, acum_y, selected_color, m_event);
+				break;
+			case ERRASE:
+					if(m_event.left_button)
+						print_px(acum_x, acum_y, WHITE);
+				break;			
+		}
 	}
+
 	return 0;
 }
 
 int
-get_action(int acum_x, int acum_y) {
-	return 0;
+get_action(int acum_x, int acum_y, mouse_event_t m_event) {
+	
+	if (m_event.left_button && acum_x >= 300 && acum_x <= 320 //Checks if the user cliked on the exit button
+		&& acum_y >= 0 && acum_y <= 20)
+		selected_action = EXIT;
+	else if(m_event.left_button && ((acum_x >= 0 && acum_x <= 20) ||  //Checks if the user cliked in the menu
+		(acum_y >= 180 && acum_y <= 200))) {
+
+		if (acum_y >= 0 && acum_y <= 180){
+
+			if (acum_y >= 0 && acum_y <= 20)
+				selected_action = LINE;
+			else if (acum_y >= 24 && acum_y <= 44)
+				selected_action = CIRCLE;
+			else if (acum_y >= 48 && acum_y <= 68)
+				selected_action = SQUARE;
+			else if (acum_y >= 72 && acum_y <= 92)
+				selected_action = ERRASE;
+
+		} else {
+
+			if (acum_x >= 0  && acum_x <= 20)
+				selected_color = 30;
+			else if (acum_x >= 21  && acum_x <= 40)
+				selected_color = BLACK;
+			else if (acum_x >= 41  && acum_x <= 60)
+				selected_color = 32;
+			else if (acum_x >= 61  && acum_x <= 80)
+				selected_color = 33;
+			else if (acum_x >= 81  && acum_x <= 100)
+				selected_color = 34;
+			else if (acum_x >= 101  && acum_x <= 120)
+				selected_color = 35;
+			else if (acum_x >= 121  && acum_x <= 140)
+				selected_color = 36;
+			else if (acum_x >= 141  && acum_x <= 160)
+				selected_color = 37;
+			else if (acum_x >= 161  && acum_x <= 180)
+				selected_color = 38;
+			else if (acum_x >= 181  && acum_x <= 200)
+				selected_color = 39;
+			else if (acum_x >= 201  && acum_x <= 220)
+				selected_color = 40;
+			else if (acum_x >= 221  && acum_x <= 240)
+				selected_color = 41;
+			else if (acum_x >= 241  && acum_x <= 260)
+				selected_color = 42;
+			else if (acum_x >= 261  && acum_x <= 280)
+				selected_color = 43;
+			else if (acum_x >= 281  && acum_x <= 300)
+				selected_color = 44;
+			else
+				selected_color = 45;
+
+			print_current_color(selected_color);
+
+		}
+	}
+
+	return selected_action;
 } 
 
 void
@@ -207,7 +289,7 @@ print_menu() {
 	print_from(rectangle, 48*WIDTH);
 	print_from(circle, 24*WIDTH);
 	print_from(cross, 300);
-	print_current_color();
+	print_current_color(selected_color);
 }
 
 void

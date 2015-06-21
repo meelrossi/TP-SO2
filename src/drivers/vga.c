@@ -3,7 +3,7 @@
 
 unsigned char * display = 0xA0000;
 unsigned char display2[HEIGHT * WIDTH];
-int selected_color = WHITE;
+int selected_color = BLACK;
 
 void
 init_vga() {
@@ -14,8 +14,8 @@ void
 fill_screen(unsigned char color){
 	int i=0;
 	for(;i<HEIGHT * WIDTH;i++){
-		display[i] = BACK_COLOR;
-		display2[i] = BACK_COLOR;
+		display[i] = color;
+		display2[i] = color;
 	}
 }
 
@@ -94,10 +94,10 @@ print_mouse(int curr_x, int curr_y, int prev_x, int prev_y) {
 	display[getPos(prev_x, prev_y + 1)] = display2[getPos(prev_x, prev_y + 1)];
 	display[getPos(prev_x + 1, prev_y + 1)] = display2[getPos(prev_x + 1, prev_y + 1)];
 
-	display[getPos(curr_x, curr_y)] = WHITE;
-	display[getPos(curr_x + 1, curr_y)] = WHITE;
-	display[getPos(curr_x, curr_y + 1)] = WHITE;
-	display[getPos(curr_x + 1, curr_y + 1)] = WHITE;
+	display[getPos(curr_x, curr_y)] = selected_color;
+	display[getPos(curr_x + 1, curr_y)] = selected_color;
+	display[getPos(curr_x, curr_y + 1)] = selected_color;
+	display[getPos(curr_x + 1, curr_y + 1)] = selected_color;
 }
 
 void
@@ -117,7 +117,7 @@ print_line(int curr_x, int curr_y) {
 
 void
 print_from(unsigned char * form, int length) {
-	int i,j,z = 0;
+	int i=0,j=0,z = 0;
 
 	for(i = length; j < 20*20; j++, i++, z++) {
 		if(z == 20){
@@ -128,3 +128,17 @@ print_from(unsigned char * form, int length) {
 		display[i] = form[j];
 	}
 }
+
+void
+print_color(int color, int pos){
+	int i=0, z=0, j=0; 
+	for(i = 180*WIDTH + pos, j=0, z = 0; j < 20*20; i++, j++, z++) {
+		if(z == 20){
+			i += WIDTH - 20;
+			z = 0;
+		}
+		display2[i] = color;
+		display[i] = color;
+	}
+}
+

@@ -317,7 +317,9 @@ int get_action(int acum_x, int acum_y);
 int execute_task(int acum_x, int acum_y, mouse_event_t m_event);
 extern void int32(unsigned char intnum, regs16_t *regs);
 void print_menu();
-
+void print_colors_menu();
+void print_color(int color, int pos);
+void print_menu();
 void print_from(unsigned char * form, int length); 
 
 

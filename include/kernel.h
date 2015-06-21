@@ -321,6 +321,6 @@ void print_colors_menu();
 void print_color(int color, int pos);
 void print_menu();
 void print_from(unsigned char * form, int length); 
-
+void print_current_color();
 
 #endif

@@ -142,3 +142,15 @@ print_color(int color, int pos){
 	}
 }
 
+void 
+print_current_color(){
+	int i = 164*WIDTH + 4, k, j;
+	for(k=0, j=0; k < 12*12; j++,k++,i++){
+		if(j == 12){
+			i += WIDTH - 12;
+			j = 0;
+		}
+		display2[i] = selected_color;
+		display[i] = selected_color;
+	}
+}

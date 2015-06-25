@@ -116,7 +116,7 @@ paint_main(int argc, char *argv[]) {
 	int acum_x=0,acum_y=0, prev_x = 0, prev_y = 0;
 	bool cursor;
 	bool exit=false;
-	selected_action = LINE;
+	selected_action = PAINT;
 	selected_color = BLACK;
 	input_event_t event;
 
@@ -221,8 +221,7 @@ execute_task(int acum_x, int acum_y, mouse_event_t m_event) {
 		switch(clicked) {
 
 			case LINE:
-					if (m_event.left_button)
-						print_px(acum_x, acum_y, selected_color);
+					print_line(acum_x, acum_y, selected_color, m_event);
 				break;
 			case CIRCLE:
 					print_circle(acum_x, acum_y, selected_color, m_event);
@@ -233,7 +232,11 @@ execute_task(int acum_x, int acum_y, mouse_event_t m_event) {
 			case ERRASE:
 					if(m_event.left_button)
 						print_px(acum_x, acum_y, WHITE);
-				break;			
+					break;
+			case PAINT:
+					if(m_event.left_button)
+						print_px(acum_x, acum_y, selected_color);
+					break;		
 		}
 	}
 
@@ -259,6 +262,8 @@ get_action(int acum_x, int acum_y, mouse_event_t m_event) {
 				selected_action = SQUARE;
 			else if (acum_y >= 72 && acum_y <= 92)
 				selected_action = ERRASE;
+			else if (acum_y >= 96 && acum_y <= 116)
+				selected_action = PAINT;
 
 		} else {
 

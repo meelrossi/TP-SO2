@@ -203,7 +203,7 @@ paint_main(int argc, char *argv[]) {
 				}
 				
 				print_mouse(acum_x, acum_y, prev_x, prev_y);
-				exit = execute_task(acum_x,acum_y,event.mouse);
+				exit = execute(acum_x,acum_y,event.mouse);
 				break;
 			default:
 				break;
@@ -217,7 +217,7 @@ paint_main(int argc, char *argv[]) {
 }
 
 int
-execute_task(int acum_x, int acum_y, mouse_event_t m_event) {
+execute(int acum_x, int acum_y, mouse_event_t m_event) {
 
 	int clicked = get_action(acum_x, acum_y, m_event);
 

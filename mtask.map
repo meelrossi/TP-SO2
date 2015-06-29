@@ -453,7 +453,7 @@ LOAD int32.o
                 0x0000000000108394                simple_phil_main
  .text          0x000000000010854f     0x1254 obj/paint.o
                 0x000000000010854f                paint_main
-                0x000000000010870f                execute_task
+                0x000000000010870f                execute
                 0x0000000000108848                get_action
                 0x0000000000108b2c                print_menu
                 0x0000000000108bbe                print_colors_menu

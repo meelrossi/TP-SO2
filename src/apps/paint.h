@@ -3,7 +3,7 @@
 
 int paint_main(int argc, char *argv[]);
 
-int execute_task(int acum_x, int acum_y, mouse_event_t m_event);
+int execute(int acum_x, int acum_y, mouse_event_t m_event);
 
 int get_action(int acum_x, int acum_y, mouse_event_t m_event); 
 

@@ -418,6 +418,7 @@ make_break(unsigned scode)
 	return NONE;
 }
 
+
 static void
 process_scan(unsigned scode)
 {
@@ -429,7 +430,8 @@ process_scan(unsigned scode)
 
 	if ( ch == CA('[') )	// ALT-ESC: foco en consola 0
 	{
-		mt_input_setfocus(0);
+		if(!(mt_cons_get_mode()==GRAPHICS))
+			mt_input_setfocus(0);
 		return;
 	}
 
@@ -443,8 +445,10 @@ process_scan(unsigned scode)
 		s[2] = numpad_map[ch - HOME];
 		mt_kbd_puts(s, 3);
 	}
-	else if ( AF1 <= ch && ch < AF1 + NVCONS - 1)
-		mt_input_setfocus(ch - AF1 + 1);				// AltFn: cambio de foco
+	else if ( AF1 <= ch && ch < AF1 + NVCONS - 1){
+		if(!(mt_cons_get_mode()==GRAPHICS))
+			mt_input_setfocus(ch - AF1 + 1);				// AltFn: cambio de foco
+	}
 	else
 	{
 		// Aquí deberían procesarse otras teclas especiales de procesamiento inmediato

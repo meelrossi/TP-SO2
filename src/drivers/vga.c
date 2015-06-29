@@ -1,6 +1,6 @@
 #include <kernel.h>
 
-unsigned char * display = 0xA0000;
+unsigned char * display = (unsigned char*) 0xA0000;
 unsigned char display2[HEIGHT * WIDTH];
 
 void

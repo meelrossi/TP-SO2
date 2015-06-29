@@ -18,6 +18,7 @@
 #define BS 0x08
 
 typedef unsigned short row[NUMCOLS];
+static int mode=TEXT;
 
 typedef struct
 {
@@ -80,6 +81,7 @@ set_real(void)
 
 void 
 set_graphics_mode(){
+	mode = GRAPHICS;
 	regs16_t regs;
 	bool ints = SetInts(false);
 	Atomic();
@@ -92,9 +94,14 @@ set_graphics_mode(){
 	SetInts(ints);
 }
 
+int
+mt_cons_get_mode(){
+	return mode;
+}
 
 void 
 set_text_mode(){
+	mode = TEXT;
 	regs16_t regs;
 	bool ints = SetInts(false);
 	Atomic();
